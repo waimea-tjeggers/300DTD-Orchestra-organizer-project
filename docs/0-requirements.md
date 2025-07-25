@@ -2,24 +2,25 @@
 
 ## Identified Problem or Need
 
-Replace this text with a clearly stated problem or need that exists that your project will attempt to solve / fulfil.
+my orchestra teacher often has problems getting some students to practise, practise some specific parts. this is due to him being unable to get in contact with them or they don't know what do due to being away
 
 
 ## End-User Requirements
 
-Replace this text with a description of your typical end-users and their specific needs / expectations / requirements.
+my typical end-user will be either an orchestra student or teacher. it should be simple to use with a basic interface so that people of any age can use
 
 
 ## Proposed Solution
+this website will have two different views, one for students and one for teachers. the students will allow them access any songs assigned to them by thier teacher on top of any notes provided. it will also allow them to join classes.
 
-Replace this text with a brief statement about the system that you intend to create, including the key functionality it should have.
+the teachers version will allow them to create classes, add students to the classes. in those classes the will be able add students to them, assign songs to the class and assign notes about them to the full class on top of assigning specific notes to specific students. when viewing the class they shpu;ld see student names and instrument they play  
 
 
 ---
 
 # Relevant Implications
 
-## NAME OF IMPLICATION 1
+## Design
 
 Replace this text with a clear explanation of what the implication means.
 

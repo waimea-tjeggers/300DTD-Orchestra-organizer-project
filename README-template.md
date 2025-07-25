@@ -1,26 +1,27 @@
-# PROJECT NAME HERE
+# Orchestra Team organizer/helper
 
-by YOUR NAME HERE
+by Tyler Eggers
 
 
 ---
 
 ## Project Description
 
-Replace this text with your project description and list the key features below
+a website to help organize orchestra/band teachers
 
-- Feature 1 here
-- Feature 2 here
-- Feature 3 here
-- Feature 4 here
-- Feature 5 here
+- allow teachers to create classes
+- allows teachers to assign songs to classes
+- allows teachers to assign specific notes to songs
+- allows teachers to view student details (name,instrument)
+- allows students to join classes created by teachers and view assignments
+- 
 
 
 ---
 
 ## Project Links
 
-- [GitHub repo for the project](https://...)
+- [GitHub repo for the project](https://github.com/waimea-tjeggers/300DTD-Orchestra-organizer-project)
 - [Live web app](https://...)
 
 
