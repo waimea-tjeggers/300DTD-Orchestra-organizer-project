@@ -12,22 +12,34 @@ Develop a prototype that simulates the key functionality of the system, then tes
 
 ## Initial Database Design
 
-Replace this text with notes regarding the DB design.
+a three part connected data base with the users, music peices and who they're assigned to
 
-![SCREENSHOT OF DB DESIGN](screenshots/example.png)
+![SCREENSHOT OF DB DESIGN](screenshots/dbInitial.png)
 
 
 ### Required Data Input
 
-Replace this text with a description of what data will be input, and where / how it will be obtained.
+end users will be required to provide thier instrument upon account creation. when teachers add a song they will be required to provide a song name and any specifics about the song they want aswell 
+
+this will be done through various forms
 
 ### Required Data Output
 
-Replace this text with a description of the outputs for the system - what types of data will be displayed?
+for the teachers
+- a list of classes
+- a list of students in said class, displayed with their name and instrument
+- a list of songs assigned to the class
+
+for the student
+- a list of classes they are in
+- a list of songs assigned to thier classes
+- any notes or specifications for the song
+
 
 ### Required Data Processing
 
-Replace this text with a description of how the data will be processed to achieve the desired output(s) - any processes / formulae?
+- classes must be filtered to only display to who is in them 
+- songs must be filtered to only show in classes they are assigned to
 
 
 ---
@@ -59,7 +71,7 @@ The next stage of prototyping was to develop the layout for each screen of the U
 
 This Figma demo shows the initial layout design for the UI:
 
-*FIGMA PROTOTYPE - PLACE THE FIGMA EMBED CODE HERE - MAKE SURE IT IS SET SO THAT EVERYONE CAN ACCESS IT*
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/a0G3q4rhRqJswdlnRd2jtQ/orchestra-practice-help?node-id=0-1&embed-host=share" allowfullscreen></iframe>
 
 ### Testing
 

@@ -22,6 +22,7 @@ a website to help organize orchestra/band teachers
 ## Project Links
 
 - [GitHub repo for the project](https://github.com/waimea-tjeggers/300DTD-Orchestra-organizer-project)
+- [ Project Documentation ](https://waimea-tjeggers.github.io/300DTD-Orchestra-organizer-project/)
 - [Live web app](https://...)
 
 
