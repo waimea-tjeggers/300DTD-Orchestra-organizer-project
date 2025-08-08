@@ -71,17 +71,25 @@ The next stage of prototyping was to develop the layout for each screen of the U
 
 This Figma demo shows the initial layout design for the UI:
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/a0G3q4rhRqJswdlnRd2jtQ/orchestra-practice-help?node-id=0-1&embed-host=share" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/proto/a0G3q4rhRqJswdlnRd2jtQ/orchestra-practice-help?node-id=4-2&starting-point-node-id=4%3A2&embed-host=share" allowfullscreen></iframe>
 
 ### Testing
 
-Replace this text with notes about what you did to test the UI flow and the outcome of the testing.
+i finished off the flow and presented it to my main end user and a couple others. the general responses were
+
+- i like the simple and basic design of the pages, not too much to think about
+
+- i like how the display for the students in the classes not only display names but also instrument
+
+- it would be good if we could add a way to view and add practise times
 
 ### Changes / Improvements
 
-Replace this text with notes any improvements you made as a result of the testing.
+added a way to keep track of practice times for students and teachers and a way to for teachers to add practice times, both repeating and one off,on top of being able to remove repeating
 
-*FIGMA IMPROVED PROTOTYPE - PLACE THE FIGMA EMBED CODE HERE - MAKE SURE IT IS SET SO THAT EVERYONE CAN ACCESS IT*
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/proto/UHRB4sFV9KLb4xN3A0KFuF/orchestra-practice-help-v2?node-id=4-2&p=f&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=4%3A2&embed-host=share" allowfullscreen></iframe>
+
+i also had to update the database to adjust for this
 
 
 ---
