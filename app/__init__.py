@@ -157,30 +157,86 @@ def delete_a_thing(id):
 
 
 #-----------------------------------------------------------
-# User registration form route
+# User registration form route(student)
 #-----------------------------------------------------------
-@app.get("/register")
+@app.get("/register_student")
 def register_form():
-    return render_template("pages/register.jinja")
+    return render_template("pages/register_student.jinja")
 
 
 #-----------------------------------------------------------
-# User login form route
+# User login form route(student)
 #-----------------------------------------------------------
 @app.get("/login")
 def login_form():
-    return render_template("pages/login.jinja")
+    return render_template("pages/login_student.jinja")
 
 
 #-----------------------------------------------------------
-# Route for adding a user when registration form submitted
+# User registration form route(teacher)
 #-----------------------------------------------------------
-@app.post("/add-user")
+@app.get("/register_teacher")
+def register_form():
+    return render_template("pages/register_teacher.jinja")
+
+
+#-----------------------------------------------------------
+# User login form route(teacher)
+#-----------------------------------------------------------
+@app.get("/login_teacher")
+def login_form():
+    return render_template("pages/login_teacher.jinja")
+
+
+#-----------------------------------------------------------
+# Route for adding a user when registration form submitted(teacher)
+#-----------------------------------------------------------
+@app.post("/add-user-teacher")
 def add_user():
     # Get the data from the form
     name = request.form.get("name")
     username = request.form.get("username")
     password = request.form.get("password")
+
+    with connect_db() as client:
+        # Attempt to find an existing record for that user
+        sql = "SELECT * FROM users WHERE username = ?"
+        params = [username]
+        result = client.execute(sql, params)
+
+        
+
+        # No existing record found, so safe to add the user
+        if not result.rows:
+            # Sanitise the name
+            name = html.escape(name)
+
+            # Salt and hash the password
+            hash = generate_password_hash(password)
+
+            # Add the user to the users table
+            sql = "INSERT INTO users (name, username, password_hash, admin) VALUES (?, ?, ?, 1)"
+            params = [name, username, hash]
+            client.execute(sql, params)
+
+            # And let them know it was successful and they can login
+            flash("Registration successful", "success")
+            return redirect("/login")
+
+        # Found an existing record, so prompt to try again
+        flash("Username already exists. Try again...", "error")
+        return redirect("/register")
+
+#-----------------------------------------------------------
+# Route for adding a user when registration form submitted(student)
+#-----------------------------------------------------------
+@app.post("/add-user-teacher")
+def add_user():
+    # Get the data from the form
+    name = request.form.get("name")
+    username = request.form.get("username")
+    password = request.form.get("password")
+    instrument = request.form.get("instrument")
 
     with connect_db() as client:
         # Attempt to find an existing record for that user
@@ -197,8 +253,8 @@ def add_user():
             hash = generate_password_hash(password)
 
             # Add the user to the users table
-            sql = "INSERT INTO users (name, username, password_hash) VALUES (?, ?, ?)"
-            params = [name, username, hash]
+            sql = "INSERT INTO users (name, username, password_hash, instrument) VALUES (?, ?, ?, ?)"
+            params = [name, username, hash, instrument]
             client.execute(sql, params)
 
             # And let them know it was successful and they can login
@@ -211,9 +267,9 @@ def add_user():
 
 
 #-----------------------------------------------------------
-# Route for processing a user login
+# Route for processing a user login(student)
 #-----------------------------------------------------------
-@app.post("/login-user")
+@app.post("/login-user-student")
 def login_user():
     # Get the login form data
     username = request.form.get("username")
@@ -247,6 +303,41 @@ def login_user():
         return redirect("/login")
 
 
+#-----------------------------------------------------------
+# Route for processing a user login(teacher)
+#-----------------------------------------------------------
+@app.post("/login-user-teacher")
+def login_user():
+    # Get the login form data
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    with connect_db() as client:
+        # Attempt to find a record for that user
+        sql = "SELECT * FROM users WHERE username = ? AND admin = 1 OR admin = true"
+        params = [username]
+        result = client.execute(sql, params)
+
+        # Did we find a record?
+        if result.rows:
+            # Yes, so check password
+            user = result.rows[0]
+            hash = user["password_hash"]
+
+            # Hash matches?
+            if check_password_hash(hash, password):
+                # Yes, so save info in the session
+                session["user_id"]   = user["id"]
+                session["user_name"] = user["name"]
+                session["logged_in"] = True
+
+                # And head back to the home page
+                flash("Login successful", "success")
+                return redirect("/")
+
+        # Either username not found, or password was wrong
+        flash("Invalid credentials", "error")
+        return redirect("/login")
 #-----------------------------------------------------------
 # Route for processing a user logout
 #-----------------------------------------------------------
