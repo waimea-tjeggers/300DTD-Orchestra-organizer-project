@@ -176,7 +176,7 @@ def login_form():
 # User registration form route(teacher)
 #-----------------------------------------------------------
 @app.get("/register_teacher")
-def register_form():
+def register_teacher():
     return render_template("pages/register_teacher.jinja")
 
 
@@ -184,15 +184,30 @@ def register_form():
 # User login form route(teacher)
 #-----------------------------------------------------------
 @app.get("/login_teacher")
-def login_form():
+def login_teacher():
     return render_template("pages/login_teacher.jinja")
 
+
+#-----------------------------------------------------------
+# User registration form route(student)
+#-----------------------------------------------------------
+@app.get("/register_student")
+def register_student():
+    return render_template("pages/register_teacher.jinja")
+
+
+#-----------------------------------------------------------
+# User login form route(teacher)
+#-----------------------------------------------------------
+@app.get("/login_student")
+def login_student():
+    return render_template("pages/login_teacher.jinja")
 
 #-----------------------------------------------------------
 # Route for adding a user when registration form submitted(teacher)
 #-----------------------------------------------------------
 @app.post("/add-user-teacher")
-def add_user():
+def add_user_teacher():
     # Get the data from the form
     name = request.form.get("name")
     username = request.form.get("username")
@@ -230,8 +245,8 @@ def add_user():
 #-----------------------------------------------------------
 # Route for adding a user when registration form submitted(student)
 #-----------------------------------------------------------
-@app.post("/add-user-teacher")
-def add_user():
+@app.post("/add-user-student")
+def add_user_student():
     # Get the data from the form
     name = request.form.get("name")
     username = request.form.get("username")
@@ -270,7 +285,7 @@ def add_user():
 # Route for processing a user login(student)
 #-----------------------------------------------------------
 @app.post("/login-user-student")
-def login_user():
+def login_user_teacher():
     # Get the login form data
     username = request.form.get("username")
     password = request.form.get("password")
@@ -292,6 +307,7 @@ def login_user():
                 # Yes, so save info in the session
                 session["user_id"]   = user["id"]
                 session["user_name"] = user["name"]
+                session["admin"] = False
                 session["logged_in"] = True
 
                 # And head back to the home page
@@ -307,7 +323,7 @@ def login_user():
 # Route for processing a user login(teacher)
 #-----------------------------------------------------------
 @app.post("/login-user-teacher")
-def login_user():
+def login_user_student():
     # Get the login form data
     username = request.form.get("username")
     password = request.form.get("password")
@@ -329,6 +345,7 @@ def login_user():
                 # Yes, so save info in the session
                 session["user_id"]   = user["id"]
                 session["user_name"] = user["name"]
+                session["admin"] = True
                 session["logged_in"] = True
 
                 # And head back to the home page
@@ -338,6 +355,32 @@ def login_user():
         # Either username not found, or password was wrong
         flash("Invalid credentials", "error")
         return redirect("/login")
+    
+
+    #-----------------------------------------------------------
+# Route for adding a song when registration form submitted
+#-----------------------------------------------------------
+@app.post("/add-song")
+def add_song():
+    # Get the data from the form
+    name = request.form.get("name")
+    image = request.form.get("username")
+    link_to_song = request.form.get("link_to_song")
+    notes = request.form.get("notes")
+    
+    # Add the user to the users table
+    sql = "INSERT INTO pieces (name, image, link_to_song, notes) VALUES (?, ?, ?, ?)"
+    params = [name, image, link_to_song, notes]
+    client.execute(sql, params)
+
+    # And let them know it was successful and they can login
+    flash("Registration successful", "success")
+    return redirect("/login")
+
+
+
+
+
 #-----------------------------------------------------------
 # Route for processing a user logout
 #-----------------------------------------------------------
@@ -346,6 +389,7 @@ def logout():
     # Clear the details from the session
     session.pop("user_id", None)
     session.pop("user_name", None)
+    session.pop("admin", None)
     session.pop("logged_in", None)
 
     # And head back to the home page

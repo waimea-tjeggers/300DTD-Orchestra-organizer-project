@@ -1,0 +1,61 @@
+{#=====================================================
+  User Registration page
+  - Form for adding a new user
+=====================================================#}
+
+{% extends 'pages/base.jinja' %}
+
+
+{% block title %}
+
+    Flask Demo - New User
+
+{% endblock %}
+
+
+{% block content %}
+
+    <article>
+
+        <header>
+            <h2>New User Registration</h2>
+        </header>
+
+        <form action="/add-song" method="POST">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Song Name"
+                required
+            >
+
+            <input
+                type="blob"
+                name="song_image"
+            >
+
+            <input
+                type="text"
+                name="link_to_song"
+                placeholder="Link to song"
+            >
+
+            <input
+                type="text"
+                name="notes"
+                placeholder="any notes about the song"
+                required>
+
+            <button>Add Song</button>
+
+        </form>
+
+        <footer>
+            Or, if you already have an account, <a href="/login">login</a>
+        </footer>
+
+    </article>
+
+{% endblock %}
+

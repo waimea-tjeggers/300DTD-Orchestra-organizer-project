@@ -34,7 +34,7 @@
     <header>
         <nav>
             <ul>
-                <li><strong><a href="/">Flask App Demo</a></strong></li>
+                <li><strong><a href="/">Practise co-ordinator app</a></strong></li>
             </ul>
 
             <ul>
@@ -43,6 +43,8 @@
                     <li>Hello, {{ session.user_name }}</li>
 
                 {% endif %}
+
+                {% if session.admin = True %}
 
                 <li><a href="/">Home</a></li>
                 <li><a href="/things">Things</a></li>
@@ -58,7 +60,7 @@
                     <li><a href="/register_student">Register as student</a></li>
 
                     <li><a href="/login_teacher">Login as teacher</a></li>
-                    <li><a href="/register">Register as teacher</a></li>
+                    <li><a href="/register_teacher">Register as teacher</a></li>
 
 
                 {% endif %}
