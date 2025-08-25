@@ -167,7 +167,7 @@ def register_form():
 #-----------------------------------------------------------
 # User login form route(student)
 #-----------------------------------------------------------
-@app.get("/login")
+@app.get("/login_student")
 def login_form():
     return render_template("pages/login_student.jinja")
 
@@ -193,7 +193,7 @@ def login_teacher():
 #-----------------------------------------------------------
 @app.get("/register_student")
 def register_student():
-    return render_template("pages/register_teacher.jinja")
+    return render_template("pages/register_student.jinja")
 
 
 #-----------------------------------------------------------
@@ -201,7 +201,7 @@ def register_student():
 #-----------------------------------------------------------
 @app.get("/login_student")
 def login_student():
-    return render_template("pages/login_teacher.jinja")
+    return render_template("pages/login_student.jinja")
 
 #-----------------------------------------------------------
 # Route for adding a user when registration form submitted(teacher)
@@ -361,6 +361,7 @@ def login_user_student():
 # Route for adding a song when registration form submitted
 #-----------------------------------------------------------
 @app.post("/add-song")
+@login_required
 def add_song():
     # Get the data from the form
     name = request.form.get("name")
@@ -369,9 +370,10 @@ def add_song():
     notes = request.form.get("notes")
     
     # Add the user to the users table
-    sql = "INSERT INTO pieces (name, image, link_to_song, notes) VALUES (?, ?, ?, ?)"
-    params = [name, image, link_to_song, notes]
-    client.execute(sql, params)
+    with connect_db() as client:
+        sql = "INSERT INTO pieces (name, image, link_to_song, notes) VALUES (?, ?, ?, ?)"
+        params = [name, image, link_to_song, notes]
+        client.execute(sql, params)
 
     # And let them know it was successful and they can login
     flash("Registration successful", "success")

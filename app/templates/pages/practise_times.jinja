@@ -16,25 +16,13 @@
 
 {% block content %}
 
-    <h1>Things...</h1>
+    <h1>Practice times</h1>
 
 
     <article>
 
         <ul>
-            {% for thing in things %}
 
-                <li>
-                    <a href="/thing/{{ thing.id }}">
-                        <strong>{{ thing.name }}</strong> - owned by {{ thing.owner }}
-                    </a>
-                </li>
-
-            {% else %}
-
-                <p>None!</p>
-
-            {% endfor %}
         </ul>
 
     </article>
