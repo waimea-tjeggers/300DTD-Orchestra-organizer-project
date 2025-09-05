@@ -35,20 +35,26 @@
 
             <h3>Add a New Thing...</h3>
 
-            <form action="/add" method="POST">
+            <form action="/add_song" method="POST">
 
                 <input
                     type="text"
-                    name="name"
-                    placeholder="Name of new thing"
+                    name="day"
+                    placeholder="which day of the week"
                     required
                 >
 
                 <input
-                    type="number"
-                    name="price"
+                    type="interger"
+                    name="time"
                     min="0"
                     placeholder="Price in dollars"
+                    required
+                >
+
+                <input
+                    type="checkbox"
+                    name="permanent?"
                     required
                 >
 

@@ -18,38 +18,36 @@
     <article>
 
         <header>
-            <h2>New Teacher Registration</h2>
+            <h2>New practice time</h2>
         </header>
 
-        <form action="/add-user-teacher" method="POST">
+        <form action="/add-practice" method="POST">
 
             <input
                 type="text"
-                name="name"
-                placeholder="Your name"
+                name="day"
+                placeholder="what day of the week"
                 required
             >
 
             <input
-                type="text"
-                name="username"
-                placeholder="Username"
+                type="int"
+                name="time"
+                placeholder="what time"
                 required
             >
 
             <input
-                type="password"
-                name="password"
-                placeholder="Password"
+                type="boolean"
+                name="permanent"
                 required
             >
 
-            <button>Register</button>
+            <button>Add practice time</button>
 
         </form>
 
         <footer>
-            Or, if you already have an account, <a href="/login_teacher">login</a>
         </footer>
 
     </article>

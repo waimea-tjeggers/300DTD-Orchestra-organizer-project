@@ -33,7 +33,22 @@ init_datetime(app)  # Handle UTC dates in timestamps
 #-----------------------------------------------------------
 @app.get("/")
 def index():
-    return render_template("pages/home.jinja")
+        # with connect_db as client:
+        # Get all the things from the DB
+        #     sql = """
+        #     SELECT class.id,
+        #            class.name,
+
+        #     FROM class
+        #     JOIN users ON class.user_id = users.id
+        #     JOIN practice_times on class.practice_times = practice_times.id
+
+        #     ORDER BY class.name ASC
+        # """
+        # params=[]
+        # result = client.execute(sql, params)
+        # things = result.rows
+            return render_template("pages/home.jinja")
 
 
 #-----------------------------------------------------------
@@ -42,6 +57,34 @@ def index():
 @app.get("/about/")
 def about():
     return render_template("pages/about.jinja")
+
+#-----------------------------------------------------------
+# add class page route
+#-----------------------------------------------------------
+@app.get("/add_class_form/")
+def add_class_form():
+    return render_template("pages/add_class_form.jinja")
+
+#-----------------------------------------------------------
+# add practice page route
+#-----------------------------------------------------------
+@app.get("/add_practice_form/")
+def add_practice_form():
+    return render_template("pages/add_practice_form.jinja")
+
+#-----------------------------------------------------------
+# add song page route
+#-----------------------------------------------------------
+@app.get("/add_song_form/")
+def add_song_form():
+    return render_template("pages/add_song_form.jinja")
+
+#-----------------------------------------------------------
+# add student page route
+#-----------------------------------------------------------
+@app.get("/add_student_form/")
+def add_student_form():
+    return render_template("pages/add_student_form.jinja")
 
 
 #-----------------------------------------------------------
@@ -110,23 +153,24 @@ def show_one_thing(id):
 @login_required
 def add_a_thing():
     # Get the data from the form
-    name  = request.form.get("name")
-    price = request.form.get("price")
+    day  = request.form.get("day")
+    time = request.form.get("time")
+    permanent = request.form.get(permanent)
 
     # Sanitise the text inputs
-    name = html.escape(name)
+    day = html.escape(day)
 
     # Get the user id from the session
-    user_id = session["user_id"]
+    
 
     with connect_db() as client:
         # Add the thing to the DB
-        sql = "INSERT INTO things (name, price, user_id) VALUES (?, ?, ?)"
-        params = [name, price, user_id]
+        sql = "INSERT INTO things (day, time, permanent) VALUES (?, ?, ?)"
+        params = [day, time, permanent]
         client.execute(sql, params)
 
         # Go back to the home page
-        flash(f"Thing '{name}' added", "success")
+        flash("success")
         return redirect("/things")
 
 
@@ -160,7 +204,7 @@ def delete_a_thing(id):
 # User registration form route(student)
 #-----------------------------------------------------------
 @app.get("/register_student")
-def register_form():
+def register_form_student():
     return render_template("pages/register_student.jinja")
 
 
@@ -168,7 +212,7 @@ def register_form():
 # User login form route(student)
 #-----------------------------------------------------------
 @app.get("/login_student")
-def login_form():
+def login_form_student():
     return render_template("pages/login_student.jinja")
 
 
@@ -176,7 +220,7 @@ def login_form():
 # User registration form route(teacher)
 #-----------------------------------------------------------
 @app.get("/register_teacher")
-def register_teacher():
+def register_form_teacher():
     return render_template("pages/register_teacher.jinja")
 
 
@@ -184,24 +228,8 @@ def register_teacher():
 # User login form route(teacher)
 #-----------------------------------------------------------
 @app.get("/login_teacher")
-def login_teacher():
+def login_form_teacher():
     return render_template("pages/login_teacher.jinja")
-
-
-#-----------------------------------------------------------
-# User registration form route(student)
-#-----------------------------------------------------------
-@app.get("/register_student")
-def register_student():
-    return render_template("pages/register_student.jinja")
-
-
-#-----------------------------------------------------------
-# User login form route(teacher)
-#-----------------------------------------------------------
-@app.get("/login_student")
-def login_student():
-    return render_template("pages/login_student.jinja")
 
 #-----------------------------------------------------------
 # Route for adding a user when registration form submitted(teacher)
@@ -240,7 +268,7 @@ def add_user_teacher():
 
         # Found an existing record, so prompt to try again
         flash("Username already exists. Try again...", "error")
-        return redirect("/register")
+        return redirect("/register_teacher")
 
 #-----------------------------------------------------------
 # Route for adding a user when registration form submitted(student)
@@ -278,14 +306,14 @@ def add_user_student():
 
         # Found an existing record, so prompt to try again
         flash("Username already exists. Try again...", "error")
-        return redirect("/register")
+        return redirect("/register_student")
 
 
 #-----------------------------------------------------------
 # Route for processing a user login(student)
 #-----------------------------------------------------------
 @app.post("/login-user-student")
-def login_user_teacher():
+def login_user_student():
     # Get the login form data
     username = request.form.get("username")
     password = request.form.get("password")
@@ -316,21 +344,21 @@ def login_user_teacher():
 
         # Either username not found, or password was wrong
         flash("Invalid credentials", "error")
-        return redirect("/login")
+        return redirect("/login_student")
 
 
 #-----------------------------------------------------------
 # Route for processing a user login(teacher)
 #-----------------------------------------------------------
 @app.post("/login-user-teacher")
-def login_user_student():
+def login_user_teacher():
     # Get the login form data
     username = request.form.get("username")
     password = request.form.get("password")
 
     with connect_db() as client:
         # Attempt to find a record for that user
-        sql = "SELECT * FROM users WHERE username = ? AND admin = 1 OR admin = true"
+        sql = "SELECT * FROM users WHERE username = ? AND admin = 1"
         params = [username]
         result = client.execute(sql, params)
 
@@ -354,10 +382,10 @@ def login_user_student():
 
         # Either username not found, or password was wrong
         flash("Invalid credentials", "error")
-        return redirect("/login")
+        return redirect("/login_teacher")
     
 
-    #-----------------------------------------------------------
+#-----------------------------------------------------------
 # Route for adding a song when registration form submitted
 #-----------------------------------------------------------
 @app.post("/add-song")
@@ -365,7 +393,7 @@ def login_user_student():
 def add_song():
     # Get the data from the form
     name = request.form.get("name")
-    image = request.form.get("username")
+    image = request.form.get("image")
     link_to_song = request.form.get("link_to_song")
     notes = request.form.get("notes")
     
@@ -377,7 +405,28 @@ def add_song():
 
     # And let them know it was successful and they can login
     flash("Registration successful", "success")
-    return redirect("/login")
+    return redirect("/")
+
+#-----------------------------------------------------------
+# Route for adding a song when registration form submitted
+#-----------------------------------------------------------
+@app.post("/add-practice")
+@login_required
+def add_practice():
+    # Get the data from the form
+    day = request.form.get("day")
+    time = request.form.get("time")
+    permanent = request.form.get("permanent")
+    
+    # Add the user to the users table
+    with connect_db() as client:
+        sql = "INSERT INTO practice_time (day, time, permanent,) VALUES (?, ?, ?,)"
+        params = [day, time, permanent]
+        client.execute(sql, params)
+
+    # And let them know it was successful and they can login
+    flash("Registration successful", "success")
+    return redirect("/")
 
 
 

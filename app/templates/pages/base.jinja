@@ -42,19 +42,26 @@
 
                     <li>Hello, {{ session.user_name }}</li>
 
+                    
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/">Things</a></li>
+                    <li><a href="/about">About</a></li>
+
                 {% endif %}
 
-                {% if session.admin = True %}
 
-                <li><a href="/">Home</a></li>
-                <li><a href="/">Things</a></li>
-                <li><a href="/about">About</a></li>
 
                 {% if session.user_id %}
+                
+                    {% if session.admin %}
+                        <li><a href="/add_class">Add Class</a></li>
+                    {% endif %}
 
                     <li><a href="/logout">Logout</a></li>
 
                 {% else %}
+
+                     <li><a href="/">Home</a></li>
 
                     <li><a href="/login_student">Login as Student</a></li>
                     <li><a href="/register_student">Register as student</a></li>
