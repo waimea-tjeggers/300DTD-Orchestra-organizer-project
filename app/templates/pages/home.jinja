@@ -18,7 +18,7 @@
 {% block content %}
 
     {%if session.user_id %}
-    welcome {session.user_id}
+    welcome session.user_id
     {%else %}
     welcome to my website, please login or register to continue 
 

@@ -33,22 +33,27 @@ init_datetime(app)  # Handle UTC dates in timestamps
 #-----------------------------------------------------------
 @app.get("/")
 def index():
-        # with connect_db as client:
-        # Get all the things from the DB
-        #     sql = """
-        #     SELECT class.id,
-        #            class.name,
+        with connect_db as client:
+        #Get all the things from the DB
+            sql = """
+            SELECT class.id,
+                   class.name,
+                   class.users_id,
+                   class.practice_times
 
-        #     FROM class
-        #     JOIN users ON class.user_id = users.id
-        #     JOIN practice_times on class.practice_times = practice_times.id
 
-        #     ORDER BY class.name ASC
-        # """
-        # params=[]
-        # result = client.execute(sql, params)
-        # things = result.rows
-            return render_template("pages/home.jinja")
+            FROM class 
+            JOIN users ON class.user_id = users.id
+            JOIN practice_times on class.practice_times = practice_times.id
+
+            WHERE class.user_id = ?
+
+            ORDER BY class.name ASC
+        """
+        params=[]
+        result = client.execute(sql, params)
+        classes = result.rows
+        return render_template("pages/home.jinja")
 
 
 #-----------------------------------------------------------
@@ -149,7 +154,7 @@ def show_one_thing(id):
 # Route for adding a thing, using data posted from a form
 # - Restricted to logged in users
 #-----------------------------------------------------------
-@app.post("/add")
+@app.post("/add-practice")
 @login_required
 def add_a_thing():
     # Get the data from the form
@@ -171,8 +176,36 @@ def add_a_thing():
 
         # Go back to the home page
         flash("success")
-        return redirect("/things")
+        return redirect("/")
 
+#-----------------------------------------------------------
+# Route for adding a thing, using data posted from a form
+# - Restricted to logged in users
+#-----------------------------------------------------------
+@app.post("/add-class")
+@login_required
+def add_a_thing():
+    
+
+    # Get the data from the form
+    class_name  = request.form.get("name")
+    user_id = session.user_id
+    # Sanitise the text inputs
+    class_name = html.escape(class_name)
+
+    # Get the user id from the session
+    
+
+    with connect_db() as client:
+        # Add the thing to the DB
+        sql = "INSERT INTO things (class_name,user_id) VALUES (?,?)"
+        params = [class_name,user_id]
+        client.execute(sql, params)
+
+        # Go back to the home page
+        flash("success")
+        return redirect("/")
+    
 
 #-----------------------------------------------------------
 # Route for deleting a thing, Id given in the route
