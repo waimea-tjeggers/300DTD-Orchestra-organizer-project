@@ -18,7 +18,24 @@
 {% block content %}
 
     {%if session.user_id %}
-    welcome session.user_id
+    <h1> welcome {%session.user_id%}</h1>
+
+    your classes
+
+      {%for class in classes %}
+          <li>
+            <a href="/class/{{ class.id }}">
+            {{class.name}}
+            </a>
+          </li>
+
+
+
+      {%if session.admin%}
+         <a href ="/add_class_form">add a class?</a>
+      {% endif %}
+
+    
     {%else %}
     welcome to my website, please login or register to continue 
 

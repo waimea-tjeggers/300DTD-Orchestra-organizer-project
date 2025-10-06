@@ -33,29 +33,66 @@ init_datetime(app)  # Handle UTC dates in timestamps
 #-----------------------------------------------------------
 @app.get("/")
 def index():
-        with connect_db as client:
-        #Get all the things from the DB
-            sql = """
-            SELECT class.id,
-                   class.name,
-                   class.users_id,
-                   class.practice_times
+        with connect_db() as client:
+        #Get all the things from the DB if logged in
+            if session.user_id:
+                sql = """
+                SELECT class.id,
+                    class.name,
+                    class.users_id,
+                    class.practice_times
+                    class.to_do
+                    class.students_id
 
 
-            FROM class 
-            JOIN users ON class.user_id = users.id
-            JOIN practice_times on class.practice_times = practice_times.id
+                FROM class 
+                JOIN users ON class.user_id = users.id
+                JOIN practice_times ON class.practice_times = practice_times.id
+                JOIN to_do ON class.to_do = to_do.id
+                JOIN students_id ON class.students_id = students.id
 
-            WHERE class.user_id = ?
+                WHERE class.user_id = ?
 
-            ORDER BY class.name ASC
+                ORDER BY class.name ASC
+            """
+            params=[id]
+            result = client.execute(sql, params)
+
+            if result.rows:
+                classes = result.rows[0]
+                return render_template("pages/home.jinja,", classes = classes)
+            
+            else:
+                # No, so show error
+                return not_found_error()
+            
+            
+
+
+
+#-----------------------------------------------------------
+# Things page route - Show all the things, and new thing form
+#-----------------------------------------------------------
+@app.get("/things/")
+def show_all_things():
+    with connect_db() as client:
+        # Get all the things from the DB
+        sql = """
+            SELECT things.id,
+                   things.name,
+                   users.name AS owner
+
+            FROM things
+            JOIN users ON things.user_id = users.id
+
+            ORDER BY things.name ASC
         """
         params=[]
         result = client.execute(sql, params)
-        classes = result.rows
-        return render_template("pages/home.jinja")
+        things = result.rows
 
-
+        # And show them on the page
+        return render_template("pages/things.jinja", things=things)
 #-----------------------------------------------------------
 # About page route
 #-----------------------------------------------------------
@@ -92,29 +129,7 @@ def add_student_form():
     return render_template("pages/add_student_form.jinja")
 
 
-#-----------------------------------------------------------
-# Things page route - Show all the things, and new thing form
-#-----------------------------------------------------------
-@app.get("/things/")
-def show_all_things():
-    with connect_db() as client:
-        # Get all the things from the DB
-        sql = """
-            SELECT things.id,
-                   things.name,
-                   users.name AS owner
 
-            FROM things
-            JOIN users ON things.user_id = users.id
-
-            ORDER BY things.name ASC
-        """
-        params=[]
-        result = client.execute(sql, params)
-        things = result.rows
-
-        # And show them on the page
-        return render_template("pages/things.jinja", things=things)
 
 
 #-----------------------------------------------------------
@@ -156,7 +171,7 @@ def show_one_thing(id):
 #-----------------------------------------------------------
 @app.post("/add-practice")
 @login_required
-def add_a_thing():
+def add_a_practice():
     # Get the data from the form
     day  = request.form.get("day")
     time = request.form.get("time")
@@ -184,7 +199,7 @@ def add_a_thing():
 #-----------------------------------------------------------
 @app.post("/add-class")
 @login_required
-def add_a_thing():
+def add_a_class():
     
 
     # Get the data from the form
