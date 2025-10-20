@@ -32,8 +32,19 @@ init_datetime(app)  # Handle UTC dates in timestamps
 # Home page route
 #-----------------------------------------------------------
 @app.get("/")
-def index():
-        with connect_db() as client:
+def home():
+            return render_template("pages/home.jinja,")
+
+            
+            
+
+
+#-----------------------------------------------------------
+# Home page route
+#-----------------------------------------------------------
+@app.get("/class")
+def classes():        
+    with connect_db() as client:
         #Get all the things from the DB if logged in
             if session.user_id:
                 sql = """
@@ -60,15 +71,11 @@ def index():
 
             if result.rows:
                 classes = result.rows[0]
-                return render_template("pages/home.jinja,", classes = classes)
+                return render_template("pages/class.jinja,", classes = classes)
             
             else:
                 # No, so show error
                 return not_found_error()
-            
-            
-
-
 
 #-----------------------------------------------------------
 # Things page route - Show all the things, and new thing form
