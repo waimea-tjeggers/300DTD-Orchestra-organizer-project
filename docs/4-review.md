@@ -2,27 +2,27 @@
 
 ## Addressing Relevant Implications
 
-### NAME OF IMPLICATION 1
+### INTELLECUAL PROPERTY 
 
 Replace this text with notes about what you did during the project to address the implication - design features, etc.
 
 
-### NAME OF IMPLICATION 2
+### USABILITY
 
 Replace this text with notes about what you did during the project to address the implication - design features, etc.
 
 
-### NAME OF IMPLICATION 3
+### END-USER
 
 Replace this text with notes about what you did during the project to address the implication - design features, etc.
 
 
-### NAME OF IMPLICATION 4
+### PRIVACY
 
 Replace this text with notes about what you did during the project to address the implication - design features, etc.
 
 
-### NAME OF IMPLICATION 5
+### FUNCTIONALITY
 
 Replace this text with notes about what you did during the project to address the implication - design features, etc.
 
